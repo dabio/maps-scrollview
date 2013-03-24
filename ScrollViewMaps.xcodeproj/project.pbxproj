@@ -18,6 +18,7 @@
 		370921C716FC3CE500D90F47 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 370921C616FC3CE500D90F47 /* Default-568h@2x.png */; };
 		370921CA16FC3CE500D90F47 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 370921C816FC3CE500D90F47 /* MainStoryboard.storyboard */; };
 		370921CD16FC3CE500D90F47 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 370921CC16FC3CE500D90F47 /* ViewController.m */; };
+		370921D416FC3DCA00D90F47 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 370921D316FC3DCA00D90F47 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		370921C916FC3CE500D90F47 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		370921CB16FC3CE500D90F47 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		370921CC16FC3CE500D90F47 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		370921D316FC3DCA00D90F47 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				370921D416FC3DCA00D90F47 /* MapKit.framework in Frameworks */,
 				370921B116FC3CE500D90F47 /* UIKit.framework in Frameworks */,
 				370921B316FC3CE500D90F47 /* Foundation.framework in Frameworks */,
 				370921B516FC3CE500D90F47 /* CoreGraphics.framework in Frameworks */,
@@ -73,6 +76,7 @@
 		370921AF16FC3CE500D90F47 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				370921D316FC3DCA00D90F47 /* MapKit.framework */,
 				370921B016FC3CE500D90F47 /* UIKit.framework */,
 				370921B216FC3CE500D90F47 /* Foundation.framework */,
 				370921B416FC3CE500D90F47 /* CoreGraphics.framework */,
