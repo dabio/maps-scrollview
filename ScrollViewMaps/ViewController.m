@@ -120,7 +120,9 @@ typedef enum ScrollDirection {
     self.lastVerticalContentOffset = scrollView.contentOffset.y;
 }
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
+                     withVelocity:(CGPoint)velocity
+              targetContentOffset:(inout CGPoint *)targetContentOffset
 {
     // Reserve this behaviour only for the main scroll view.
     if (scrollView != self.scrollView) return;
@@ -133,7 +135,8 @@ typedef enum ScrollDirection {
     *targetContentOffset = scrollView.contentOffset;
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView
+                  willDecelerate:(BOOL)decelerate
 {
     // Reserve this behaviour only for the main scroll view.
     if (scrollView != self.scrollView) return;
