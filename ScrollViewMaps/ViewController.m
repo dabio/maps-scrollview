@@ -18,7 +18,7 @@
 #define VELOCITY_LIMIT 1.0f
 // The size must at least be moved before the view gets
 // to another view.
-#define MIN_OFFSET 20
+#define MIN_OFFSET 30
 
 // See http://stackoverflow.com/questions/2543670/
 typedef enum ScrollDirection {
@@ -147,7 +147,8 @@ typedef enum ScrollDirection {
     if (position < self.previousPosition - MIN_OFFSET || position > self.previousPosition + MIN_OFFSET) {
         scrollRect.origin.y = [self getNextPosition:position
                                fromPreviousPosition:self.previousPosition
-                                     withFastScroll:(self.lastVerticalVelocity > VELOCITY_LIMIT)];
+                                     withFastScroll:(self.lastVerticalVelocity > VELOCITY_LIMIT)
+                                 andScrollDirection:self.scrollDirection];
     }
 
     self.previousPosition = scrollRect.origin.y;
@@ -173,9 +174,18 @@ typedef enum ScrollDirection {
 
 #pragma mark - Helpers
 
-- (NSInteger)getNextPosition:(NSInteger)position fromPreviousPosition:(NSInteger)previousPosition withFastScroll:(BOOL)fastScroll
+- (NSInteger)getNextPosition:(NSInteger)position
+        fromPreviousPosition:(NSInteger)previousPosition
+              withFastScroll:(BOOL)fastScroll
+          andScrollDirection:(ScrollDirection)scrollDirection
 {
-    
+    // Catch case: user goes back to starting position.
+    if (position > previousPosition && scrollDirection == ScrollDirectionDown) {
+        return previousPosition;
+    }
+    if (position < previousPosition && scrollDirection == ScrollDirectionUp) {
+        return previousPosition;
+    }
 
     if (fastScroll) {
         return (position > previousPosition) ? self.top : self.bottom;
