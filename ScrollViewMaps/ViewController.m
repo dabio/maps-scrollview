@@ -184,10 +184,10 @@ typedef enum ScrollDirection {
 {
     // Catch case: user goes back to starting position.
     if (position > previousPosition && scrollDirection == ScrollDirectionDown) {
-        return previousPosition;
+        return fastScroll ? self.top : previousPosition;
     }
     if (position < previousPosition && scrollDirection == ScrollDirectionUp) {
-        return previousPosition;
+        return fastScroll ? self.bottom : previousPosition;
     }
 
     if (fastScroll) {
