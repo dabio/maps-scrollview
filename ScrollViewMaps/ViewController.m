@@ -80,11 +80,18 @@ typedef enum ScrollDirection {
     
     // Set the size of the scrollview twice the size of the view minus
     // the visible label area (LABEL_HEIGHT).
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height * 2 - LABEL_HEIGHT);
+    self.scrollView.contentSize = CGSizeMake(
+        self.view.frame.size.width,
+        self.view.frame.size.height * 2 - LABEL_HEIGHT
+    );
 
     // Set the hover views frame to the bottom of the content size of
     // the scrollview.
-    self.hoverView.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.size.height - LABEL_HEIGHT, self.view.frame.size.width, self.view.frame.size.height);
+    self.hoverView.frame = CGRectMake(
+        self.view.frame.origin.x,
+        self.view.frame.size.height - LABEL_HEIGHT,
+        self.view.frame.size.width, self.view.frame.size.height
+    );
     
     // Programmatically add the hover view to the scroll view.
     [self.scrollView addSubview:self.hoverView];
@@ -92,11 +99,14 @@ typedef enum ScrollDirection {
 
 - (void)viewDidLayoutSubviews
 {
-    // Set the initial position and size of the map.
-    //self.mapView.frame = CGRectMake(self.mapView.frame.origin.x, self.mapView.frame.origin.y, self.mapView.frame.size.width, MAP_HEIGHT);
-    
     // Scroll to the required position in the scroll view.
-    [self.scrollView scrollRectToVisible:CGRectMake(self.scrollView.frame.origin.x, self.scrollView.frame.size.height - LABEL_HEIGHT - MAP_HEIGHT, self.scrollView.frame.size.width, self.scrollView.frame.size.height) animated:NO];
+    CGRect scrollRect = CGRectMake(
+        self.scrollView.frame.origin.x,
+        self.scrollView.frame.size.height - LABEL_HEIGHT - MAP_HEIGHT,
+        self.scrollView.frame.size.width,
+        self.scrollView.frame.size.height
+    );
+    [self.scrollView scrollRectToVisible:scrollRect animated:NO];
 
     self.previousPosition = self.middle;
 }
@@ -116,7 +126,7 @@ typedef enum ScrollDirection {
     } else if (self.lastVerticalContentOffset < scrollView.contentOffset.y) {
         self.scrollDirection = ScrollDirectionUp;
     }
-    //NSLog(@"%d, %f, %d", self.lastVerticalContentOffset, scrollView.contentOffset.y, self.scrollDirection);
+
     self.lastVerticalContentOffset = scrollView.contentOffset.y;
 }
 
@@ -147,7 +157,9 @@ typedef enum ScrollDirection {
     // default: previous position
     scrollRect.origin.y = self.previousPosition;
 
-    if (position < self.previousPosition - MIN_OFFSET || position > self.previousPosition + MIN_OFFSET) {
+    if (position < self.previousPosition - MIN_OFFSET
+        || position > self.previousPosition + MIN_OFFSET)
+    {
         scrollRect.origin.y = [self getNextPosition:position
                                fromPreviousPosition:self.previousPosition
                                      withFastScroll:(self.lastVerticalVelocity > VELOCITY_LIMIT)
@@ -158,11 +170,20 @@ typedef enum ScrollDirection {
     [scrollView scrollRectToVisible:scrollRect animated:YES];
 }
 
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    // Reserve this behaviour only for the main scroll view.
+    if (scrollView != self.scrollView) return;
+    
+    // Allow user input on map only when fully exposed.
+    self.mapView.scrollEnabled = self.mapView.zoomEnabled = (self.scrollView.contentOffset.y == self.bottom);
+}
+
 #pragma mark - Gesture Recognizers
 
 - (IBAction)tapOnLabelContainer:(UITapGestureRecognizer *)sender
 {
-    // Gesture should have ended.
+    // Gesture has ended.
     if (sender.state != UIGestureRecognizerStateEnded) return;
 
     NSInteger position = self.scrollView.contentOffset.y;
@@ -173,6 +194,19 @@ typedef enum ScrollDirection {
     if (position == self.bottom) scrollRect.origin.y = self.middle;
 
     [self.scrollView scrollRectToVisible:scrollRect animated:YES];
+}
+
+- (IBAction)tapOnMap:(UITapGestureRecognizer *)sender
+{
+    // Gesture has ended.
+    if (sender.state != UIGestureRecognizerStateEnded) return;
+    
+    if (self.scrollView.contentOffset.y == self.middle) {
+        CGRect scrollRect = self.scrollView.frame;
+        scrollRect.origin.y = self.bottom;
+        
+        [self.scrollView scrollRectToVisible:scrollRect animated:YES];
+    }
 }
 
 #pragma mark - Helpers
