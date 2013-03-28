@@ -35,6 +35,8 @@ typedef enum ScrollDirection {
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *hoverView;
 
+@property (strong, nonatomic) UIView *touchMapView;
+
 @property (nonatomic) CGFloat lastVerticalVelocity;
 @property (nonatomic) ScrollDirection scrollDirection;
 @property (nonatomic) NSInteger lastVerticalContentOffset;
@@ -71,6 +73,19 @@ typedef enum ScrollDirection {
     return _bottom;
 }
 
+- (UIView *)touchMapView
+{
+    if (!_touchMapView) {
+        _touchMapView = [[UIView alloc] init];
+        UITapGestureRecognizer *gestureRecognizer =
+            [[UITapGestureRecognizer alloc] initWithTarget:self
+            action:@selector(tapOnTouchMapView:)];
+        //self.touchMapView.backgroundColor = [UIColor orangeColor];
+        [self.touchMapView addGestureRecognizer:gestureRecognizer];
+    }
+    return _touchMapView;
+}
+
 #pragma mark - View Controller Lifecycle
 
 - (void)viewDidLoad
@@ -90,15 +105,22 @@ typedef enum ScrollDirection {
     self.hoverView.frame = CGRectMake(
         self.view.frame.origin.x,
         self.view.frame.size.height - LABEL_HEIGHT,
-        self.view.frame.size.width, self.view.frame.size.height
+        self.view.frame.size.width,
+        self.view.frame.size.height
     );
-    
-    // Programmatically add the hover view to the scroll view.
     [self.scrollView addSubview:self.hoverView];
+
+    [self.scrollView addSubview:self.touchMapView];
 }
 
 - (void)viewDidLayoutSubviews
 {
+    // Set the frame for the temporary map touch view. This view is only visible
+    // when the scroll is at the middle position. This view is neccessary to
+    // allow the scrolling and tapping on the map.
+    self.touchMapView.frame = CGRectMake(0, 0, self.view.frame.size.width,
+        self.view.frame.size.height - LABEL_HEIGHT);
+
     // Scroll to the required position in the scroll view.
     CGRect scrollRect = CGRectMake(
         self.scrollView.frame.origin.x,
@@ -176,7 +198,11 @@ typedef enum ScrollDirection {
     if (scrollView != self.scrollView) return;
     
     // Allow user input on map only when fully exposed.
-    self.mapView.scrollEnabled = self.mapView.zoomEnabled = (self.scrollView.contentOffset.y == self.bottom);
+    self.mapView.scrollEnabled = self.mapView.zoomEnabled =
+        (scrollView.contentOffset.y == self.bottom);
+
+    // Hide touchMapView when map is fully exposed.
+    self.touchMapView.hidden = (scrollView.contentOffset.y == self.bottom);
 }
 
 #pragma mark - Gesture Recognizers
@@ -196,7 +222,7 @@ typedef enum ScrollDirection {
     [self.scrollView scrollRectToVisible:scrollRect animated:YES];
 }
 
-- (IBAction)tapOnMap:(UITapGestureRecognizer *)sender
+- (void)tapOnTouchMapView:(UITapGestureRecognizer *)sender
 {
     // Gesture has ended.
     if (sender.state != UIGestureRecognizerStateEnded) return;

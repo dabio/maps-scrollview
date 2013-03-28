@@ -12,11 +12,7 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MUf-6n-Ndh">
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="VIL-hD-erf" appends="YES" id="KAy-g1-qEX"/>
-                                </connections>
-                            </mapView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MUf-6n-Ndh"/>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZM-Ac-oc5" customClass="ScrollView">
                                 <connections>
                                     <outlet property="delegate" destination="2" id="cby-pl-BOO"/>
@@ -29,10 +25,10 @@
                             <constraint firstItem="MUf-6n-Ndh" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="DXA-Oi-Oxy"/>
                             <constraint firstItem="MUf-6n-Ndh" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="F0y-qx-DBD"/>
                             <constraint firstItem="aZM-Ac-oc5" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="GkP-Os-Scu"/>
-                            <constraint firstItem="aZM-Ac-oc5" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="dzZ-L7-olU"/>
+                            <constraint firstItem="aZM-Ac-oc5" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="user" id="dzZ-L7-olU"/>
                             <constraint firstItem="MUf-6n-Ndh" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="g41-ax-E1g"/>
                             <constraint firstItem="MUf-6n-Ndh" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="wU8-1V-wvG"/>
-                            <constraint firstItem="aZM-Ac-oc5" firstAttribute="top" secondItem="3" secondAttribute="top" type="default" id="x2q-6m-x04"/>
+                            <constraint firstItem="aZM-Ac-oc5" firstAttribute="top" secondItem="3" secondAttribute="top" type="user" id="x2q-6m-x04"/>
                         </constraints>
                     </view>
                     <connections>
@@ -78,11 +74,6 @@
                 <tapGestureRecognizer id="NtO-LA-tie">
                     <connections>
                         <action selector="tapOnLabelContainer:" destination="2" id="tkV-rv-q9k"/>
-                    </connections>
-                </tapGestureRecognizer>
-                <tapGestureRecognizer id="VIL-hD-erf">
-                    <connections>
-                        <action selector="tapOnMap:" destination="2" id="OD2-Ur-UkQ"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
